@@ -1,2 +1,23 @@
-﻿
-<h1>Products</h1>
+﻿@model IEnumerable<ShopProjectMVC.Core.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="card-container">
+@foreach(var product in Model)
+{
+    <div class="card">
+        <div class="card-image"></div>
+        <div class="category"> @product.Name </div>
+        <div class="heading">
+            @product.Description
+            <div class="author"> By <span class="name">@product.Price</span></div>
+        </div>
+    </div>
+}
+</div>
+
+
+
+

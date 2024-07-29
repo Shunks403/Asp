@@ -24,16 +24,35 @@ namespace ShopProjectMVC.Core.Services
 
         public async Task<Order> BuyProduct(int userId, int productId)
         {
-            var product =  await _repository.GetById<Product>(productId);
+            var product = await _repository.GetById<Product>(productId);
+            if (product == null)
+            {
+                throw new ArgumentException("Product not found.");
+            }
+
+            if (product.Count <= 0)
+            {
+                throw new InvalidOperationException("Product is out of stock.");
+            }
+
             var user = await _repository.GetById<User>(userId);
-            Order order = new Order();
+            if (user == null)
+            {
+                throw new ArgumentException("User not found.");
+            }
 
-            order.Product = product;
-            order.User = user;
-            order.CreatedAt = DateTime.Now;
+            Order order = new Order
+            {
+                Product = product,
+                User = user,
+                CreatedAt = DateTime.Now
+            };
 
+            
+            product.Count -= 1;
+
+            await _repository.Update(product);
             return await _repository.Add(order);
-
         }
 
         public Task DeleteProduct(int id)

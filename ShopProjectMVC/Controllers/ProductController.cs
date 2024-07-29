@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopProjectMVC.Core.Interfaces;
+using ShopProjectMVC.Core.Models;
 
 namespace ShopProjectMVC.Controllers
 {
@@ -8,19 +9,17 @@ namespace ShopProjectMVC.Controllers
     {
         private readonly IProductService _productService;
 
-        ProductController(IProductService productService)
+        public  ProductController(IProductService productService)
         {
             _productService = productService;
         }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
+        
 
-        public ActionResult Products()
+        public IActionResult Products()
         {
-            return View(); 
+            IEnumerable<Product> products = _productService.GetAll();
+            return View(products); 
         }
 
        

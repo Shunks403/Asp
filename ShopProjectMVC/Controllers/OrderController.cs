@@ -18,7 +18,7 @@ public class OrderController : Controller
     public IActionResult Orders()
     {
         int userId = 1;
-        IEnumerable<Order> orders = _orderService.GetOrders(userId);
+        IEnumerable<Order> orders = _orderService.GetOrders(userId).ToList();
         return View(orders);
     }
 }
