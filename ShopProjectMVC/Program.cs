@@ -15,6 +15,19 @@ builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds((int)builder.Configuration.GetValue(typeof(int),"SessionTimeout"));
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
+
 //builder.Services.AddTransient - creates object every time
 //builder.Services.AddScoped    - creates object every request
 //builder.Services.AddSingleton - creates object once
@@ -30,9 +43,13 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 
+
+
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

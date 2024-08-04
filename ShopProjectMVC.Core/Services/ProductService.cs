@@ -74,5 +74,10 @@ namespace ShopProjectMVC.Core.Services
         {
             return _repository.Update(product);
         }
+
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return _repository.GetAll<Category>();
+        }
     }
 }

@@ -17,8 +17,16 @@ public class OrderController : Controller
     
     public IActionResult Orders()
     {
-        int userId = 1;
-        IEnumerable<Order> orders = _orderService.GetOrders(userId).ToList();
-        return View(orders);
+        if (HttpContext.Session.GetString("user") == null)
+        {
+            return RedirectToAction("Login", "User");
+        }
+        else
+        {
+            int userId = HttpContext.Session.GetInt32("id").Value;
+            IEnumerable<Order> orders = _orderService.GetOrders(userId).ToList();
+            return View(orders);
+        }
+        
     }
 }
